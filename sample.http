@@ -1,1 +1,8 @@
-GET 
+POST http://localhost:7233/api/ConvertImages_HttpStart
+content-type: application/json
+
+{
+    "SourceContainer": "files",
+    "SourcePath": "source",
+    "DestinationPath": "destination"
+}
