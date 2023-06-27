@@ -1,5 +1,5 @@
 # ConvertTiffDurable
-Azure Durable function using fan-out pattern to convert a batch of tiff images to jpg (or other formats).
+Azure Durable function using fan-out pattern to convert a batch of tiff images to jpg (or other formats) using [Magick.NET](https://github.com/dlemstra/Magick.NET).
 
 This function is triggered with an HTTP POST request using the following body:
 
