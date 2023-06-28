@@ -31,15 +31,19 @@ namespace ConvertTiffDurable
             var fileList = await context.CallActivityAsync<List<string>>(nameof(GetEntries), storageProps);
 
             // Call ConvertTiff activity for each file
-            // control max concurrency settings using hosts file - https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-bindings#hostjson-settings
+            
+            // use fan-out/fan-in pattern, queue the async Activity Function tasks so we can execute in parallel
             var tasks = new List<Task>();
             foreach (var file in fileList)
             {
                 tasks.Add(context.CallActivityAsync(nameof(ConvertTiff), new ConvertTiffProperties { FileName = file, StorageProperties = storageProps}));
             }
+
             // wait for all tasks to process in parallel
+            // control max concurrency settings using hosts file - https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-bindings#hostjson-settings
             await Task.WhenAll(tasks);
 
+            // return desired success message or payload
             return new List<string> { "completed" };
         }        
 
